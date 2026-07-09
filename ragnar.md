@@ -239,20 +239,20 @@ ragnar/
 - [x] Set `grounded = len(chunks) > 0` — if no chunks passed the similarity threshold, the answer was produced from an empty context and should be flagged as ungrounded in the response
 - [x] Build and return an `AskResponse` with answer, sources (converted from `SourceChunk` to `SourceChunkResponse`), grounded flag, and token usage
 - [x] Handle `EmbeddingModelMismatchError` and `ChunkConfigMismatchError` with HTTP 409 and a message explaining that the vector store must be wiped and re-ingested; handle `LLMCallError` with HTTP 502
-- [ ] Create `backend/routes/documents.py`
-- [ ] Define a FastAPI `APIRouter`
-- [ ] Implement `GET /documents` that calls `doc_registry.list_documents` and returns `DocumentListResponse`
-- [ ] Implement `DELETE /documents/{doc_id}` that calls `doc_registry.get_document_by_id` to look up the document, raises `DocumentNotFoundError` (HTTP 404) if not found, then calls `vector_store_client.delete_by_source` to remove all chunks from ChromaDB, then calls `doc_registry.delete_document` to remove the registry entry, and returns a 200 with a success message — always delete from both stores or neither; if the ChromaDB deletion fails, do not proceed with the registry deletion
-- [ ] Create `backend/main.py`
-- [ ] Instantiate `FastAPI(title="Ragnar", description="RAG-powered document Q&A API", version="1.0.0")`
-- [ ] Add a `@app.on_event("startup")` handler that calls `dependencies.initialize_clients()` — fail fast at startup if the OpenAI API key is missing or the ChromaDB path is inaccessible
-- [ ] Add `CORSMiddleware` with `allow_origins=settings.cors_allowed_origins`, `allow_methods=["GET", "POST", "DELETE"]` — never use `["*"]` for origins
-- [ ] Include routers from `health`, `ingest`, `ask`, and `documents` with appropriate prefixes (e.g., `/api/v1`)
-- [ ] Add global exception handlers for all custom error classes in `errors.py`, each returning only the sanitized client-facing message and the appropriate HTTP status code
-- [ ] Test locally with `uvicorn backend.main:app --reload`
-- [ ] Visit `/docs` to verify all four endpoint groups appear with correct schemas
-- [ ] Upload a development document via `POST /ingest` using the Swagger UI file upload
-- [ ] Ask a question about that document via `POST /ask` and verify the answer is grounded in the correct source chunk
+- [x] Create `backend/routes/documents.py`
+- [x] Define a FastAPI `APIRouter`
+- [x] Implement `GET /documents` that calls `doc_registry.list_documents` and returns `DocumentListResponse`
+- [x] Implement `DELETE /documents/{doc_id}` that calls `doc_registry.get_document_by_id` to look up the document, raises `DocumentNotFoundError` (HTTP 404) if not found, then calls `vector_store_client.delete_by_source` to remove all chunks from ChromaDB, then calls `doc_registry.delete_document` to remove the registry entry, and returns a 200 with a success message — always delete from both stores or neither; if the ChromaDB deletion fails, do not proceed with the registry deletion
+- [x] Create `backend/main.py`
+- [x] Instantiate `FastAPI(title="Ragnar", description="RAG-powered document Q&A API", version="1.0.0")`
+- [x] Add a `@app.on_event("startup")` handler that calls `dependencies.initialize_clients()` — fail fast at startup if the OpenAI API key is missing or the ChromaDB path is inaccessible
+- [x] Add `CORSMiddleware` with `allow_origins=settings.cors_allowed_origins`, `allow_methods=["GET", "POST", "DELETE"]` — never use `["*"]` for origins
+- [x] Include routers from `health`, `ingest`, `ask`, and `documents` with appropriate prefixes (e.g., `/api/v1`)
+- [x] Add global exception handlers for all custom error classes in `errors.py`, each returning only the sanitized client-facing message and the appropriate HTTP status code
+- [x] Test locally with `uvicorn backend.main:app --reload`
+- [x] Visit `/docs` to verify all four endpoint groups appear with correct schemas
+- [x] Upload a development document via `POST /ingest` using the Swagger UI file upload
+- [x] Ask a question about that document via `POST /ask` and verify the answer is grounded in the correct source chunk
 - [ ] Create `frontend/app.py`
 - [ ] Set page configuration: `st.set_page_config(page_title="Ragnar – Document Q&A", layout="wide")`
 - [ ] Initialize session state keys: `chat_history` (list of `{role, content, sources}` dicts), `documents` (list of ingested document names fetched from the API)

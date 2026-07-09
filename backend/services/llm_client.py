@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from backend.core.errors import LLMCallError
 import openai
+import time
 
 
 @dataclass
@@ -13,10 +14,14 @@ class LLMResponse:
 def generate_answer(
     messages: list[dict], client: openai.OpenAI, model: str
 ) -> LLMResponse:
+    time.sleep(1)
 
     try:
         response = client.chat.completions.create(
-            model=model, messages=messages, temperature=0
+            model=model,
+            messages=messages,
+            temperature=0,
+            extra_body={"reasoning": {"enabled": True}},
         )
 
         answer = response.choices[0].message.content

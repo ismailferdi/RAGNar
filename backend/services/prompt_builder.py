@@ -16,7 +16,7 @@ respond with exactly: 'I could not find the answer in the uploaded documents.'
 Do not use prior knowledge. Cite the relevant context item by number, e.g. [1], [2].
 """
 
-encoding = tiktoken.encoding_for_model(settings.chat_model)
+encoding = tiktoken.get_encoding("cl100k_base")
 
 
 def format_context(chunks: list[SourceChunk]) -> str:

@@ -26,7 +26,8 @@ class Settings(BaseSettings):
     max_context_tokens: int = 8000
     top_k: int = 5
     min_similarity: float = 0.3
-    core_allowed_origin: list[str]
+    core_allowed_origins: list[str]
+    allowed_methods: list[str]
 
 
 settings = Settings()

@@ -33,29 +33,23 @@ def estimate_char_offsets(chunks: list[str], full_text: str) -> list[tuple[int, 
 def chunk_document(
     doc: LoadedDocument, chunk_size: int, chunk_overlap: int
 ) -> list[TextChunk]:
-
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap,
         length_function=len,
     )
-
     chunks = text_splitter.split_text(doc.text)
 
-    offsets = estimate_char_offsets(chunks, doc.text)
-    result = []
+    chunks = [c for c in chunks if c.strip()]
 
-    for i, (char_start, char_end) in enumerate(offsets):
-        chunk = doc.text[char_start:char_end]
-        result.append(
-            TextChunk(
-                text=chunk,
-                source_file=doc.source_file,
-                chunk_index=i,
-                char_start=char_start,
-                char_end=char_end,
-                total_chunks=len(chunks),
-            )
+    return [
+        TextChunk(
+            text=chunk,
+            source_file=doc.source_file,
+            chunk_index=i,
+            char_start=...,
+            char_end=...,
+            total_chunks=len(chunks),  # recalculate after filtering
         )
-
-    return result
+        for i, chunk in enumerate(chunks)
+    ]
