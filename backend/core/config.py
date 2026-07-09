@@ -3,6 +3,7 @@ from pydantic import SecretStr
 from pathlib import Path
 
 ENV_PATH = Path(__file__).parent.parent.parent / ".env"
+MAX_UPLOAD_SIZE_MB: int = 25
 
 
 class Settings(BaseSettings):

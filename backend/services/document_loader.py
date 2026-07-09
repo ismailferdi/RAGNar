@@ -59,7 +59,7 @@ def load_txt(file_path: str, source_file: str) -> LoadedDocument:
 def load_document(file_path: str, original_filename: str) -> LoadedDocument:
 
     source_file = sanitize_filename(original_filename)
-    _, ext = os.path.splitext(file_path)
+    _, ext = os.path.splitext(original_filename)
     ext = ext.lower()
 
     if ext == ".pdf":
@@ -68,5 +68,5 @@ def load_document(file_path: str, original_filename: str) -> LoadedDocument:
         return load_txt(file_path, source_file)
     else:
         raise UnsupportedFileTypeError(
-            f"Unsupported file type '{ext}' for file '{file_path}'. Only PDF and TXT files are supported."
+            f"Unsupported file type '{ext}' for file '{original_filename}'. Only PDF and TXT files are supported."
         )

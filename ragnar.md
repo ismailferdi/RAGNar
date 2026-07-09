@@ -211,34 +211,34 @@ ragnar/
 - [x] Create `backend/dependencies.py`
 - [x] Declare module-level singletons `_openai_client = None`, `_chroma_client = None`, `_collection = None`
 - [x] Implement `initialize_clients()` that creates the `openai.OpenAI` client (with `api_key=settings.openai_api_key.get_secret_value()`), creates the `chromadb.PersistentClient`, calls `get_or_create_collection`, calls `validate_collection_config`, and calls `doc_registry.initialize_registry` — to be called once at FastAPI startup
-- [ ] Implement `get_openai_client()`, `get_chroma_collection()` that return the cached singletons or raise if not initialized
-- [ ] Create `backend/routes/health.py`
-- [ ] Define a FastAPI `APIRouter`
-- [ ] Implement `GET /health` that attempts `get_chroma_collection()` and `doc_registry.list_documents()` to confirm both stores are reachable, sets `vector_store_connected` and `registry_connected` booleans accordingly, and returns `HealthResponse` — if a store is unreachable, still return 200 with the relevant boolean set to `False` rather than raising (health is diagnostic, not a gate)
-- [ ] Create `backend/routes/ingest.py`
-- [ ] Define a FastAPI `APIRouter`
+- [x] Implement `get_openai_client()`, `get_chroma_collection()` that return the cached singletons or raise if not initialized
+- [x] Create `backend/routes/health.py`
+- [x] Define a FastAPI `APIRouter`
+- [x] Implement `GET /health` that attempts `get_chroma_collection()` and `doc_registry.list_documents()` to confirm both stores are reachable, sets `vector_store_connected` and `registry_connected` booleans accordingly, and returns `HealthResponse` — if a store is unreachable, still return 200 with the relevant boolean set to `False` rather than raising (health is diagnostic, not a gate)
+- [x] Create `backend/routes/ingest.py`
+- [x] Define a FastAPI `APIRouter`
 - [ ] Implement `POST /ingest` as an async endpoint that accepts `file: UploadFile = File(...)` and `force: bool = Query(default=False)` as parameters
-- [ ] Add `MAX_UPLOAD_SIZE_MB` (default 25) to `backend/core/config.py`; check `file.size` (or stream and count bytes if `size` is unavailable) before saving, and raise `FileTooLargeError` (HTTP 413) if exceeded — an unbounded upload is both a DoS vector and a way to silently blow the chunking/embedding pipeline's memory on a single request
-- [ ] Save the uploaded file to `settings.document_store_path / sanitize_filename(file.filename)` using async file I/O (`aiofiles` or `Path.write_bytes`)
-- [ ] Note that `chunker.chunk_document` and `embedder.embed_texts` are both CPU/network-bound blocking calls; wrap them with `starlette.concurrency.run_in_threadpool` (or make the route `def` instead of `async def`, letting FastAPI run it in its own threadpool) so a large document being processed doesn't block the event loop from serving concurrent `/ask` or `/health` requests
-- [ ] Call `document_loader.load_document` on the saved file
-- [ ] Call `vector_store_client.source_exists` to check if this document is already ingested; if `True` and `force=False`, raise `DocumentAlreadyIngestedError` with a message explaining the `force=True` option; if `force=True`, call `vector_store_client.delete_by_source` and `doc_registry.delete_document` before proceeding
-- [ ] Call `chunker.chunk_document(doc, settings.chunk_size, settings.chunk_overlap)` to split the document
-- [ ] Call `embedder.embed_texts` on all chunk texts (in batches if needed)
-- [ ] Call `vector_store_client.add_chunks` to store chunks with embeddings
-- [ ] Call `doc_registry.register_document` to record the document in the SQLite registry
-- [ ] Return `IngestResponse` with a success message, sanitized filename, and chunk count
-- [ ] Handle `UnsupportedFileTypeError` and `EmptyDocumentError` with HTTP 422; handle `DocumentAlreadyIngestedError` with HTTP 409; handle `FileTooLargeError` with HTTP 413; handle `EmbeddingCallError` with HTTP 502; always return only safe client messages, never the raw exception string
-- [ ] Create `backend/routes/ask.py`
-- [ ] Define a FastAPI `APIRouter`
-- [ ] Implement `POST /ask` that accepts `AskRequest` as the JSON request body
-- [ ] Resolve `effective_top_k = request.top_k or settings.top_k`
-- [ ] Call `retriever.retrieve(question, collection, openai_client, settings.embedding_model, effective_top_k, settings.min_similarity)` to get the filtered `SourceChunk` list
-- [ ] Call `prompt_builder.build_prompt(question, chunks, settings.max_context_tokens)` to assemble the LLM messages
-- [ ] Call `llm_client.generate_answer(messages, openai_client, settings.chat_model)` to get the `LLMResponse`
-- [ ] Set `grounded = len(chunks) > 0` — if no chunks passed the similarity threshold, the answer was produced from an empty context and should be flagged as ungrounded in the response
-- [ ] Build and return an `AskResponse` with answer, sources (converted from `SourceChunk` to `SourceChunkResponse`), grounded flag, and token usage
-- [ ] Handle `EmbeddingModelMismatchError` and `ChunkConfigMismatchError` with HTTP 409 and a message explaining that the vector store must be wiped and re-ingested; handle `LLMCallError` with HTTP 502
+- [x] Add `MAX_UPLOAD_SIZE_MB` (default 25) to `backend/core/config.py`; check `file.size` (or stream and count bytes if `size` is unavailable) before saving, and raise `FileTooLargeError` (HTTP 413) if exceeded — an unbounded upload is both a DoS vector and a way to silently blow the chunking/embedding pipeline's memory on a single request
+- [x] Save the uploaded file to `settings.document_store_path / sanitize_filename(file.filename)` using async file I/O (`aiofiles` or `Path.write_bytes`)
+- [x] Note that `chunker.chunk_document` and `embedder.embed_texts` are both CPU/network-bound blocking calls; wrap them with `starlette.concurrency.run_in_threadpool` (or make the route `def` instead of `async def`, letting FastAPI run it in its own threadpool) so a large document being processed doesn't block the event loop from serving concurrent `/ask` or `/health` requests
+- [x] Call `document_loader.load_document` on the saved file
+- [x] Call `vector_store_client.source_exists` to check if this document is already ingested; if `True` and `force=False`, raise `DocumentAlreadyIngestedError` with a message explaining the `force=True` option; if `force=True`, call `vector_store_client.delete_by_source` and `doc_registry.delete_document` before proceeding
+- [x] Call `chunker.chunk_document(doc, settings.chunk_size, settings.chunk_overlap)` to split the document
+- [x] Call `embedder.embed_texts` on all chunk texts (in batches if needed)
+- [x] Call `vector_store_client.add_chunks` to store chunks with embeddings
+- [x] Call `doc_registry.register_document` to record the document in the SQLite registry
+- [x] Return `IngestResponse` with a success message, sanitized filename, and chunk count
+- [x] Handle `UnsupportedFileTypeError` and `EmptyDocumentError` with HTTP 422; handle `DocumentAlreadyIngestedError` with HTTP 409; handle `FileTooLargeError` with HTTP 413; handle `EmbeddingCallError` with HTTP 502; always return only safe client messages, never the raw exception string
+- [x] Create `backend/routes/ask.py`
+- [x] Define a FastAPI `APIRouter`
+- [x] Implement `POST /ask` that accepts `AskRequest` as the JSON request body
+- [x] Resolve `effective_top_k = request.top_k or settings.top_k`
+- [x] Call `retriever.retrieve(question, collection, openai_client, settings.embedding_model, effective_top_k, settings.min_similarity)` to get the filtered `SourceChunk` list
+- [x] Call `prompt_builder.build_prompt(question, chunks, settings.max_context_tokens)` to assemble the LLM messages
+- [x] Call `llm_client.generate_answer(messages, openai_client, settings.chat_model)` to get the `LLMResponse`
+- [x] Set `grounded = len(chunks) > 0` — if no chunks passed the similarity threshold, the answer was produced from an empty context and should be flagged as ungrounded in the response
+- [x] Build and return an `AskResponse` with answer, sources (converted from `SourceChunk` to `SourceChunkResponse`), grounded flag, and token usage
+- [x] Handle `EmbeddingModelMismatchError` and `ChunkConfigMismatchError` with HTTP 409 and a message explaining that the vector store must be wiped and re-ingested; handle `LLMCallError` with HTTP 502
 - [ ] Create `backend/routes/documents.py`
 - [ ] Define a FastAPI `APIRouter`
 - [ ] Implement `GET /documents` that calls `doc_registry.list_documents` and returns `DocumentListResponse`

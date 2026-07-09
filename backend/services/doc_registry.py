@@ -28,6 +28,7 @@ def register_document(
                           VALUES (?, ?, ?, ?);""",
             (original_filename, sanitized_filename, ingestion_timestamp, chunk_count),
         )
+        conn.commit()
 
 
 def list_documents(db_path: str) -> list[dict]:
@@ -49,6 +50,7 @@ def get_document_by_id(db_path: str, doc_id: int) -> dict | None:
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM documents WHERE id = ?;", (doc_id,))
+        conn.commit()
         row = cursor.fetchone()
 
         if row:
@@ -65,6 +67,25 @@ def get_document_by_id(db_path: str, doc_id: int) -> dict | None:
     return document
 
 
+def get_document_id_by_sanitized_filename(
+    db_path: str, sanitized_filename: str
+) -> int | None:
+
+    with sqlite3.connect(db_path) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT id FROM documents WHERE sanitized_filename = ?;",
+            (sanitized_filename,),
+        )
+        conn.commit()
+        row = cursor.fetchone()
+
+        if row:
+            return row[0]
+        else:
+            return None
+
+
 def delete_document(db_path: str, doc_id: int) -> str | None:
 
     with sqlite3.connect(db_path) as conn:
@@ -72,6 +93,7 @@ def delete_document(db_path: str, doc_id: int) -> str | None:
         cursor.execute(
             "SELECT sanitized_filename FROM documents WHERE id = ?;", (doc_id,)
         )
+        conn.commit()
         row = cursor.fetchone()
 
         if row:

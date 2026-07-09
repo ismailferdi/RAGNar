@@ -1,3 +1,6 @@
+from fastapi import HTTPException, status
+
+
 class EmptyDocumentError(Exception):
     pass
 
@@ -30,5 +33,5 @@ class DocumentNotFoundError(Exception):
     pass
 
 
-class FileTooLargeError(Exception):
+class FileTooLargeError(HTTPException):
     pass
