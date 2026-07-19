@@ -34,10 +34,10 @@ async def lifespan(app: FastAPI):
     print("Shutting down...")
     client = getattr(dependencies, "_openai_client", None)
     if client is not None:
-        if hasattr(client, "aclose"):
-            await client.aclose()
-        elif callable(getattr(client, "close", None)):
-            await asyncio.to_thread(client.close)
+        if hasattr(client, "_client") and hasattr(client._client, "aclose"):
+            await client._client.aclose()
+        if hasattr(client, "close"):
+            await client.close()
 
 
 app = FastAPI(
