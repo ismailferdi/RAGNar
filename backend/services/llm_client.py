@@ -23,6 +23,7 @@ async def generate_answer(
             messages=messages,
             temperature=0,
             extra_body={"reasoning": {"enabled": True}},
+            stream=True
         )
 
         answer = response.choices[0].message.content

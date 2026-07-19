@@ -1,0 +1,17 @@
+venv/
+.venv/
+__pycache__/
+.env
+vector_store/
+data/documents/
+registry.db
+.git/
+.gitignore
+*.md
+assets/
+tests/
+eval/
+Makefile
+pytest.ini
+ci.env
+docker/
