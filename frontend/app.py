@@ -1,4 +1,3 @@
-import os
 import streamlit as st
 import httpx
 from frontend.components import uploader, chat

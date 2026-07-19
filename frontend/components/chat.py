@@ -1,6 +1,5 @@
 import streamlit as st
 import httpx
-import os
 
 from frontend.components.source_viewer import render_sources
 

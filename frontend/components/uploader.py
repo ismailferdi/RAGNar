@@ -1,6 +1,5 @@
 import streamlit as st
 import httpx
-import os
 from json import loads, JSONDecodeError
 
 API_BASE_URL = st.secrets["RAGNAR_API_URL"]
