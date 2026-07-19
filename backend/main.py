@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from slowapi import _rate_limit_exceeded_handler
-import asyncio
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
