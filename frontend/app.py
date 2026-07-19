@@ -16,7 +16,7 @@ try:
     response = httpx.get(f"{API_BASE_URL}/documents/")
     response.raise_for_status()
     st.session_state["documents"] = response.json()
-except httpx.RequestError as e:
+except httpx.RequestError:
     st.warning(
         "Failed to fetch documents from the backend. Some features may be limited."
     )

@@ -1,6 +1,6 @@
 import pytest
-from unittest.mock import MagicMock, AsyncMock
-from openai import OpenAIError, APIConnectionError
+from unittest.mock import AsyncMock
+from openai import OpenAIError
 from backend.services.llm_client import generate_answer, LLMResponse
 from backend.core.errors import LLMCallError
 

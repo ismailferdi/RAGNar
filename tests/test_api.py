@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, AsyncMock, patch
+from unittest.mock import AsyncMock, patch
 from io import BytesIO
 
 from backend.services.retriever import SourceChunk

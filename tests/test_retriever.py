@@ -1,10 +1,10 @@
 import uuid
 from unittest.mock import MagicMock, AsyncMock
 import pytest
-from backend.services.retriever import retrieve, SourceChunk
+from backend.services.retriever import retrieve
 from backend.services.vector_store_client import add_chunks, get_or_create_collection
 from backend.services.chunker import TextChunk
-from backend.core.errors import EmbeddingModelMismatchError, ChunkConfigMismatchError
+from backend.core.errors import EmbeddingModelMismatchError
 from tests.conftest import EMBEDDING_DIM
 
 EMBEDDING_MODEL = "nvidia/llama-nemotron-embed-vl-1b-v2"

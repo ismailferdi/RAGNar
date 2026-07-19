@@ -1,4 +1,4 @@
-from backend.services.prompt_builder import build_prompt, format_context, SYSTEM_PROMPT
+from backend.services.prompt_builder import build_prompt, SYSTEM_PROMPT
 from backend.services.retriever import SourceChunk
 
 

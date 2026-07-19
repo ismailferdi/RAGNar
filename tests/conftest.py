@@ -4,7 +4,6 @@ from unittest.mock import MagicMock, AsyncMock, patch
 import pytest
 import chromadb
 from fastapi.testclient import TestClient
-from pathlib import Path
 
 from backend.services.chunker import TextChunk
 from backend.services.doc_registry import initialize_registry

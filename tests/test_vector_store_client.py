@@ -1,5 +1,4 @@
 import uuid
-import chromadb
 import pytest
 from chromadb.api import ClientAPI
 from backend.services.vector_store_client import (

@@ -1,7 +1,6 @@
 import chromadb
 import asyncio
 from chromadb.api import ClientAPI
-from backend.core.config import settings
 from backend.core.errors import EmbeddingModelMismatchError, ChunkConfigMismatchError
 from backend.services.chunker import TextChunk
 

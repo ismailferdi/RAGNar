@@ -114,7 +114,7 @@ async def main():
         question = item.get("question", "")
         expected_answer = item.get("expected_answer", "")
         relevant_chunk_text = item.get("relevant_chunk_text", "")
-        source_file = item.get("source_file", "")
+
 
         retrieved_chunks: list[SourceChunk] = await retrieve(
             query=question,

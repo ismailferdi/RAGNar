@@ -1,4 +1,4 @@
-from backend.services.chunker import chunk_document, TextChunk
+from backend.services.chunker import chunk_document
 from backend.services.document_loader import LoadedDocument
 
 UNIQUE_TEXT = (

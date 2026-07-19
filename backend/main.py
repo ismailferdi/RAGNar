@@ -11,7 +11,17 @@ from backend.routes.health import health_router
 from backend.routes.ingest import ingest_router
 from backend.dependencies import initialize_clients
 from backend.core.config import settings
-from backend.core.errors import *
+from backend.core.errors import (
+    EmptyDocumentError,
+    UnsupportedFileTypeError,
+    EmbeddingCallError,
+    EmbeddingModelMismatchError,
+    ChunkConfigMismatchError,
+    LLMCallError,
+    DocumentAlreadyIngestedError,
+    DocumentNotFoundError,
+    FileTooLargeError,
+)
 from backend import dependencies
 from backend.limiter import limiter
 
