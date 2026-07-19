@@ -1,7 +1,7 @@
 import streamlit as st
 import httpx
 
-from source_viewer import render_sources
+from .source_viewer import render_sources
 
 API_BASE_URL = st.secrets["RAGNAR_API_URL"]
 
