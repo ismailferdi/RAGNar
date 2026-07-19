@@ -1,6 +1,6 @@
 import streamlit as st
 import httpx
-from frontend.components import uploader, chat
+from components import uploader, chat
 
 st.set_page_config(page_title="Ragnar – Document Q&A", layout="wide")
 
