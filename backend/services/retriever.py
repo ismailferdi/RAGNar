@@ -12,10 +12,10 @@ class SourceChunk:
     similarity_score: float
 
 
-def retrieve(
+async def retrieve(
     query: str,
     collection,
-    client: openai.OpenAI,
+    client: openai.AsyncOpenAI,
     embedding_model: str,
     chunk_size: int,
     chunk_overlap: int,
@@ -23,14 +23,9 @@ def retrieve(
     min_similarity: float,
 ) -> list[SourceChunk]:
 
-    validate_collection_config(
-        collection=collection,
-        embedding_model=embedding_model,
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap,
-    )
+    validate_collection_config(collection, embedding_model, chunk_size, chunk_overlap)
 
-    embedding = embed_query(query, client, embedding_model)
+    embedding = await embed_query(query, client, embedding_model)
 
     results = search(collection, embedding, top_k)
 

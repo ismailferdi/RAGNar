@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from slowapi import _rate_limit_exceeded_handler
+import asyncio
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -10,14 +12,22 @@ from backend.routes.ingest import ingest_router
 from backend.dependencies import initialize_clients
 from backend.core.config import settings
 from backend.core.errors import *
+from backend import dependencies
+from backend.limiter import limiter
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Starting up...")
-    initialize_clients()
+    await initialize_clients()
     yield
     print("Shutting down...")
+    client = getattr(dependencies, "_openai_client", None)
+    if client is not None:
+        if hasattr(client, "aclose"):
+            await client.aclose()
+        elif callable(getattr(client, "close", None)):
+            await asyncio.to_thread(client.close)
 
 
 app = FastAPI(
@@ -31,8 +41,12 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.core_allowed_origins,
+    allow_credentials=True,
     allow_methods=settings.allowed_methods,
+    allow_headers=["*"],
 )
+
+app.state.limiter = limiter
 
 
 app.include_router(documents_router, prefix="/documents", tags=["Documents"])
@@ -44,6 +58,9 @@ app.include_router(ingest_router, prefix="/ingest", tags=["Ingest"])
 @app.get("/")
 async def root():
     return {"message": "Welcome to the RAG-powered document Q&A API!"}
+
+
+app.add_exception_handler(429, _rate_limit_exceeded_handler)
 
 
 @app.exception_handler(EmptyDocumentError)

@@ -1,23 +1,25 @@
 import openai
-import time
+import asyncio
 from backend.core.config import settings
 from backend.core.errors import EmbeddingCallError
 
 MAX_RETRIES = 3
 
 
-def _call_embedding_api(
-    batch: list[str], client: openai.OpenAI, model: str
+async def _call_embedding_api(
+    batch: list[str],
+    client: openai.AsyncOpenAI,
+    model: str,
+    input_type: str = "passage",
 ) -> list[list[float]]:
-    # NVIDIA model requires multimodal content format even for text
-    formatted_input = [{"content": [{"type": "text", "text": text}]} for text in batch]
 
     for attempt in range(MAX_RETRIES):
         try:
-            response = client.embeddings.create(
+            response = await client.embeddings.create(
                 model=model,
-                input=formatted_input,
+                input=batch,
                 encoding_format="float",
+                extra_body={"input_type": input_type},
             )
             return [item.embedding for item in response.data]
         except (
@@ -26,15 +28,18 @@ def _call_embedding_api(
             openai.APITimeoutError,
         ) as e:
             if attempt < MAX_RETRIES - 1:
-                time.sleep(2**attempt)
+                await asyncio.sleep(2**attempt)
             else:
                 raise EmbeddingCallError(
                     "Embedding service temporarily unavailable. Please try again later."
                 ) from e
 
 
-def embed_texts(
-    texts: list[str], client: openai.OpenAI, model: str
+async def embed_texts(
+    texts: list[str],
+    client: openai.AsyncOpenAI,
+    model: str,
+    input_type: str = "passage",
 ) -> list[list[float]]:
     if not texts:
         return []
@@ -42,12 +47,14 @@ def embed_texts(
     embeddings: list[list[float]] = []
     for i in range(0, len(texts), settings.embed_batch_size):
         batch = texts[i : i + settings.embed_batch_size]
-        batch_embeddings = _call_embedding_api(batch, client, model)
+        batch_embeddings = await _call_embedding_api(batch, client, model, input_type)
         embeddings.extend(batch_embeddings)
 
     return embeddings
 
 
-def embed_query(query: str, client: openai.OpenAI, model: str) -> list[float]:
-    result = embed_texts([query], client, model)
+async def embed_query(
+    query: str, client: openai.AsyncOpenAI, model: str
+) -> list[float]:
+    result = await embed_texts([query], client, model, input_type="query")
     return result[0] if result else []

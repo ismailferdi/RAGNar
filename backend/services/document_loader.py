@@ -1,4 +1,5 @@
 from backend.core.errors import EmptyDocumentError, UnsupportedFileTypeError
+from backend.core.config import MAX_UPLOAD_SIZE_MB
 from pypdf import PdfReader
 from dataclasses import dataclass
 from typing import Literal
@@ -28,9 +29,12 @@ def load_pdf(file_path: str, source_file: str) -> LoadedDocument:
 
     reader = PdfReader(file_path)
 
-    pages_text = [
-        page.extract_text() for page in reader.pages if page.extract_text() is not None
-    ]
+    pages_text = []
+    for page in reader.pages:
+        text = page.extract_text()
+        if text:
+            pages_text.append(text)
+
     text = "\n".join(pages_text)
 
     if not text.strip():
@@ -42,6 +46,13 @@ def load_pdf(file_path: str, source_file: str) -> LoadedDocument:
 
 
 def load_txt(file_path: str, source_file: str) -> LoadedDocument:
+
+    max_file_size = MAX_UPLOAD_SIZE_MB * 1024 * 1024
+    if os.path.getsize(file_path) > max_file_size:
+        raise ValueError(
+            f"The file '{file_path}' exceeds the maximum allowed size of {MAX_UPLOAD_SIZE_MB} MB."
+        )
+
     try:
         with open(
             file_path,

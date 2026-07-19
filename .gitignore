@@ -10,6 +10,8 @@ vector_store/*
 .vscode/
 !.vscode/extensions.json
 *.code-workspace
+.pytest_cache/
+chroma.sqlite3
 .DS_Store
 Thumbs.db
 

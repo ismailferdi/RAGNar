@@ -38,4 +38,5 @@ class DocumentNotFoundError(HTTPException):
 
 
 class FileTooLargeError(HTTPException):
-    pass
+    def __init__(self, detail: str):
+        super().__init__(status_code=413, detail=detail)

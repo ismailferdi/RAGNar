@@ -1,27 +1,29 @@
-from fastapi import APIRouter
-import sqlite3
+from fastapi import APIRouter, Request
 
 from backend.dependencies import get_chroma_collection
 from backend.services.doc_registry import list_documents
 from backend.models.responses import HealthResponse
 from backend.core.config import settings
+from backend.limiter import limiter
 
 health_router = APIRouter()
 
 
 @health_router.get("/", response_model=HealthResponse)
-def health() -> HealthResponse:
+@limiter.limit("10/minute")
+async def health(request: Request) -> HealthResponse:
 
     try:
-        get_chroma_collection()
+        collection = get_chroma_collection()
+        collection.count()
         vector_store_connected = True
-    except RuntimeError:
+    except Exception:
         vector_store_connected = False
 
     try:
-        list_documents(db_path=settings.registry_db_path)
+        await list_documents(db_path=settings.registry_db_path)
         registry_connected = True
-    except sqlite3.Error:
+    except Exception:
         registry_connected = False
 
     status = "healthy" if vector_store_connected and registry_connected else "unhealthy"

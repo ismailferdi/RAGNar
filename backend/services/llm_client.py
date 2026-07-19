@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from backend.core.errors import LLMCallError
 import openai
 import time
+import asyncio
 
 
 @dataclass
@@ -11,13 +12,13 @@ class LLMResponse:
     completion_tokens: int
 
 
-def generate_answer(
-    messages: list[dict], client: openai.OpenAI, model: str
+async def generate_answer(
+    messages: list[dict], client: openai.AsyncOpenAI, model: str
 ) -> LLMResponse:
-    time.sleep(1)
+    await asyncio.sleep(0.2)
 
     try:
-        response = client.chat.completions.create(
+        response = await client.chat.completions.create(
             model=model,
             messages=messages,
             temperature=0,

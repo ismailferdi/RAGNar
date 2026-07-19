@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, HTTPException
+from fastapi import APIRouter, status, HTTPException, Request
 from dataclasses import asdict
 
 from backend.models.requests import AskRequest
@@ -13,22 +13,24 @@ from backend.services.retriever import retrieve
 from backend.services.prompt_builder import build_prompt
 from backend.services.llm_client import generate_answer
 from backend.dependencies import get_chroma_collection, get_openai_client
+from backend.limiter import limiter
 
 ask_router = APIRouter()
 
 
 @ask_router.post("/", response_model=AskResponse)
-def ask_question(request: AskRequest) -> AskResponse:
+@limiter.limit("10/minute")
+async def ask_question(request: Request, askrequest: AskRequest) -> AskResponse:
 
     try:
 
-        effective_top_k = request.top_k or settings.top_k
+        effective_top_k = askrequest.top_k or settings.top_k
 
         collection = get_chroma_collection()
         client = get_openai_client()
 
-        source_chunks = retrieve(
-            query=request.question,
+        source_chunks = await retrieve(
+            query=askrequest.question,
             collection=collection,
             client=client,
             embedding_model=settings.embedding_model,
@@ -39,12 +41,12 @@ def ask_question(request: AskRequest) -> AskResponse:
         )
 
         messages = build_prompt(
-            question=request.question,
+            question=askrequest.question,
             chunks=source_chunks,
             max_context_tokens=settings.max_context_tokens,
         )
 
-        llm_response = generate_answer(
+        llm_response = await generate_answer(
             messages=messages, client=client, model=settings.chat_model
         )
 

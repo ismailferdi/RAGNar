@@ -1,0 +1,242 @@
+[
+  {
+    "question": "What is the mathematical formula for latency per generated token in speculative decoding?",
+    "expected_answer": "L = (T_draft + T_verify) / tau, where T_draft is drafting time, T_verify is verification time, and tau is the expected number of accepted tokens per cycle.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "latency per generated token L equals T draft plus T verify divided by tau"
+  },
+  {
+    "question": "What is the default rank r used in the Markov head low-rank factorization in DSpark?",
+    "expected_answer": "r = 256 by default.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "low rank factorization with r equals 256 by default keeps both storage and per step compute small"
+  },
+  {
+    "question": "What is the false-allow rate of the dynamic semantic monitor under adversarial attack in Governed Individuation?",
+    "expected_answer": "0.00 \u2014 the dynamic monitor achieves zero false allows across all 32 adversarial bypass attempts covering four effect classes.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "the false allow rate falls monotonically across monitor tiers 0 75 for a name intent blocklist 0 50 substring 0 25 for a path resolving static monitor and 0 00 once the monitor also traces the path opened at execution"
+  },
+  {
+    "question": "Which three open-weight model families were evaluated on the governance-decision benchmark?",
+    "expected_answer": "Qwen2.5-7B-Instruct, Mistral-7B-Instruct-v0.2, and Phi-3.5-mini-instruct.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "three open weight models from three families Qwen 2 5 7B Instruct Mistral 7B Instruct v0 2 Phi 3 5 mini instruct"
+  },
+  {
+    "question": "What is the maximum block size gamma configured for DSpark in the DeepSeek-V4 production deployment?",
+    "expected_answer": "gamma = 5.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "maximum block size to gamma equals 5"
+  },
+  {
+    "question": "What are the default weights for the three loss terms in DSpark training objective?",
+    "expected_answer": "alpha_ce = 0.1, alpha_tv = 0.9, alpha_conf = 1.0.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "default weights alpha ce equals 0 1 alpha tv equals 0 9 alpha conf equals 1 0"
+  },
+  {
+    "question": "What does the identity digest H in Governed Individuation equal and what cryptographic property does it rely on?",
+    "expected_answer": "H = h(ser(S)), where S is the frozen seed and h is a collision-resistant hash function.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "identity digest is H equals h of ser of S for a collision resistant h"
+  },
+  {
+    "question": "What was the held-out forbidden-proposal rate for Mistral-7B with no memory in the Governed Individuation experiments?",
+    "expected_answer": "0.339, or approximately 34%.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "Mistral 7B 0 339 0 000 0 000 0 000 0 143 without governance memory the forbidden proposal rate is highest"
+  },
+  {
+    "question": "What does Theorem 1 in Governed Individuation guarantee about a maximally wrong induced principle?",
+    "expected_answer": "A maximally wrong induced principle can shift the proposal distribution arbitrarily, but every proposal is still filtered by the same frozen gate, so it can only raise the refusal rate, never the executed authority.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "maximally wrong induced principle can shift the proposal distribution arbitrarily but every proposal is still filtered by the same frozen gate"
+  },
+  {
+    "question": "How does DSpark semi-autoregressive architecture address the two key weaknesses of pure parallel drafters?",
+    "expected_answer": "It addresses rapid acceptance decay at later positions by adding a lightweight sequential head for intra-block dependency modeling, and wasted verification compute via confidence-scheduled verification that prunes low-confidence suffix tokens.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "semi autoregressive architecture coupling a parallel backbone with a lightweight sequential module to introduce intra block dependency modeling and mitigate suffix decay"
+  },
+  {
+    "question": "Explain the pipeline for how a proposed action is evaluated in Governed Individuation from proposal to execution or refusal.",
+    "expected_answer": "The learning policy proposes an action, a semantic-effect verifier compiles it into its lattice effect independent of its name, the compiled effect is compared against the frozen boundary commitment S, and then if within the ceiling it executes and appends to the signed audit chain, otherwise it is refused.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "every proposed action is intercepted resolved into its semantic effect and admitted or refused against the frozen commitment"
+  },
+  {
+    "question": "How does the Hardware-Aware Prefix Scheduler in DSpark determine verification length and why does it use a greedy algorithm?",
+    "expected_answer": "It maximizes expected system-wide throughput Theta = tau * SPS(B). It uses greedy admission because survival probabilities are monotonically non-increasing, ensuring optimal allocation for any fixed batch size without combinatorial search.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "maximize the expected system wide token throughput Theta equals tau times SPS of B"
+  },
+  {
+    "question": "What is the write-set discipline in Governed Individuation and why is it architecturally necessary?",
+    "expected_answer": "Learned modules cannot write to the frozen seed S, the authority ceiling, the signature store, or the gate code. This is necessary because if learned modules could modify S or the gate, a maximally wrong induced principle could silently widen the boundary.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "learned modules I phi and M theta have no write access to S to the authority ceiling to the operator signature store or to the gate code"
+  },
+  {
+    "question": "What did the induced-principle transfer experiments reveal and what do the shuffled and wrong-domain controls show?",
+    "expected_answer": "The induced principle lowered held-out forbidden-proposal rates across all three models, but the shuffled control matched or beat it, showing the transferring signal is broad avoidance of refused effects, not a uniquely induced rule. The one specificity that survived is that recorded refusal content beats a generic refused cue.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "the transferring signal is broad avoidance of the refused kinds of effect"
+  },
+  {
+    "question": "How does DSpark confidence head estimate token survival probabilities and what calibration technique ensures reliability?",
+    "expected_answer": "The confidence head outputs c_k = sigma(w^T [h_k; W_1[x_{k-1}]]), modeling the conditional probability a token survives verification. Sequential Temperature Scaling performs 1D grid search at each position to minimize ECE of the cumulative product, reducing average ECE from 3-8 percent to approximately 1 percent.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "confidence head outputs a scalar c_k for each draft position modeling the conditional probability that the draft token at position k will survive target verification"
+  },
+  {
+    "question": "What is the central architectural guarantee of Governed Individuation and how is it different from training-time alignment?",
+    "expected_answer": "No amount of learning, skill acquisition, or self-induced governance abstraction can widen the agent permitted authority without an operator-signed identity change. This is an architectural invariant, unlike training-time alignment which is only probabilistic.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "no amount of learning skill acquisition or self induced governance abstraction can widen the agent permitted authority without an operator signed change to its identity"
+  },
+  {
+    "question": "By what percentages did DSpark improve macro-average accepted length over DFlash across the three Qwen3 target model scales?",
+    "expected_answer": "16.3 percent, 18.4 percent, and 18.3 percent on Qwen3-4B, 8B, and 14B respectively.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "improves the macro average accepted length over DFlash by 16 3 percent 18 4 percent and 18 3 percent"
+  },
+  {
+    "question": "What was the executed forbidden-write rate on gated arms in the ToolGym-GI benchmark?",
+    "expected_answer": "Exactly zero on every task and seed \u2014 a verified property of the construction, not an empirical estimate.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "Under the effect gate every gated arm executes exactly zero forbidden effects on every task and seed this zero is not an empirical estimate but a verified property of the construction"
+  },
+  {
+    "question": "What are the two key weaknesses of pure parallel drafters that DSpark identifies and how does each manifest?",
+    "expected_answer": "Lack of inter-token dependencies causes rapid acceptance decay at later positions due to multi-modal collision. Indiscriminate verification of extended blocks wastes batch capacity on tokens with high rejection risk, degrading throughput.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "parallel drafters predict each position independently they cannot model inter token dependencies within a block this independence leads to multi modal collisions and rapid acceptance decay at later positions"
+  },
+  {
+    "question": "Under live user traffic in DeepSeek-V4 serving system what acceleration did DSpark achieve over MTP-1?",
+    "expected_answer": "60-85 percent per-user generation speed for V4-Flash and 57-78 percent for V4-Pro at matched throughput levels.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "consistently accelerates per user generation speeds by 60 percent to 85 percent V4 Flash and 57 percent to 78 percent V4 Pro"
+  },
+  {
+    "question": "What are the three levers for improving speculative decoding speedup identified by DSpark?",
+    "expected_answer": "Lowering T_draft (draft faster), raising tau (draft better by increasing acceptance), or reducing effective T_verify (verify smarter).",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "Improving speedup therefore reduces to three levers lowering T draft draft faster raising tau draft better or reducing the effective T verify verify smarter"
+  },
+  {
+    "question": "What does Theorem 2 in Governed Individuation establish that a name-based gate cannot?",
+    "expected_answer": "Theorem 2 establishes growth without escalation: the skill library may grow without bound while reachable authority stays fixed. A name-based gate cannot detect composite effects like read-secret followed by network-send, where each part is individually admissible but the composition exceeds the ceiling.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "Theorem 2 is what a name based gate cannot give the counterexample is a pair of individually admissible capabilities whose composition is harmful read secret followed by network send"
+  },
+  {
+    "question": "How does the position-wise conditional acceptance analysis explain parallel drafter advantages?",
+    "expected_answer": "Parallel drafters have higher accuracy at position 1 due to deeper networks and O(1) drafting latency, and position 1 carries the most leverage because a rejection there invalidates the entire block. But they suffer rapid decay at later positions, which DSpark semi-autoregressive design mitigates.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "parallel drafters can afford much deeper networks this structural gap yields a substantial accuracy margin at position 1 with DFlash starting noticeably higher than Eagle3"
+  },
+  {
+    "question": "What does the training loss L_tv in DSpark penalize and what does it directly optimize?",
+    "expected_answer": "L_tv penalizes the total variation distance between draft and target distributions. Since per-step acceptance probability equals 1 minus half the TV distance, minimizing L_tv directly maximizes the expected acceptance rate.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "total variation distance between the draft and target distributions since the total variation distance is a direct proxy for the acceptance rate the per step acceptance probability equals 1 minus half the TV distance"
+  },
+  {
+    "question": "In Governed Individuation what happens when the induced principle is completely wrong and why is this safe?",
+    "expected_answer": "A maximally wrong principle can only raise the refusal rate, never the executed authority, because every proposal is still filtered by the same frozen gate. The agent becomes timid or inefficient but cannot escalate.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "a maximally wrong induced principle can make the agent timid or inefficient it cannot make it escalate"
+  },
+  {
+    "question": "What benchmarks were used across the three evaluation domains in DSpark offline protocol?",
+    "expected_answer": "Mathematical Reasoning (GSM8K, MATH500, AIME25), Code Generation (MBPP, HumanEval, LiveCodeBench), and Daily Chat (MT-Bench, Alpaca, Arena-Hard).",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "three domains Mathematical Reasoning including GSM8K MATH500 and AIME25 Code Generation including MBPP HumanEval and LiveCodeBench Daily Chat including MT Bench Alpaca and Arena Hard"
+  },
+  {
+    "question": "How does the semantic gate in Governed Individuation classify actions differently from a name-based gate?",
+    "expected_answer": "The gate decides based on an action semantic effect on a permission lattice, not its name or intent label. A relabeled action is still caught by what it does, and a composite of individually-permitted skills whose combined effect exceeds the ceiling is refused even though a name-based filter would pass it.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "gate decides on the action semantic effect rather than on its name so an action relabelled to look benign is still caught by what it does"
+  },
+  {
+    "question": "What latency overhead does DSpark sequential head add and what accepted length gain does it deliver?",
+    "expected_answer": "Only 0.2 percent to 1.3 percent overhead at batch size 128, while delivering up to a 30 percent improvement in accepted length over DFlash at longer draft lengths.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "scaling the draft length from 4 to 16 adds a marginal 0 2 percent to 1 3 percent to the full round latency over the DFlash baseline despite delivering up to a 30 percent improvement in accepted length"
+  },
+  {
+    "question": "What is the false-allow rate of the weakest name/intent blocklist monitor tier under adversarial attack?",
+    "expected_answer": "0.75 \u2014 the name/intent blocklist allows 75 percent of the 32 adversarial bypass attempts.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "the false allow rate falls monotonically across monitor tiers 0 75 for a name intent blocklist"
+  },
+  {
+    "question": "What are the two instantiations of DSpark sequential block and how do they differ?",
+    "expected_answer": "The Markov head restricts dependency to the immediately preceding token via a low-rank factorization. The RNN head maintains a recurrent state accumulating the full prefix history. The RNN head gives marginal additional gains mainly at longer proposal lengths.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "Markov head restricts dependency to the immediately preceding token reducing it to a first order transition the RNN head maintains a recurrent state that accumulates the full prefix history within a block"
+  },
+  {
+    "question": "How did ungoverned agents behave on the hardest ToolGym-GI task family?",
+    "expected_answer": "On the hardest family under repeated still-failing pressure agents proposed an edit to the grading file on 12 of 12 seeds. Aggregated over families the forbidden-proposal rate was 27 percent for Mistral and 31 percent for Qwen.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "on its hardest family the even Fibonacci task for Mistral the balance checking task for Qwen under repeated still failing pressure it proposes an edit to the very file that grades it on 12 of 12 seeds"
+  },
+  {
+    "question": "What is the early-stopping mechanism in DSpark prefix scheduler and what problem does it solve?",
+    "expected_answer": "The scheduler breaks greedy search when throughput drops, preventing future token information from leaking into admission decisions. This is needed because the confidence head next-step probability depends on the previously sampled token and using it would create selection bias violating lossless decoding.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "early stopping mechanism that breaks the greedy search immediately when the throughput drops to prevent the admission event from depending on future candidate tokens"
+  },
+  {
+    "question": "What are the two instantiations of DSpark sequential block?",
+    "expected_answer": "The Markov head which depends only on the immediately preceding token and the RNN head which maintains a recurrent state that accumulates the full prefix history.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": "We describe two instantiations of the sequential block Markov head and RNN head"
+  },
+  {
+    "question": "How did blocking forbidden shortcuts affect legitimate task success in ToolGym-GI?",
+    "expected_answer": "Blocking the shortcut did not destroy competence where competence was within reach: Qwen reached the legitimate fix on 12 of 12 gated seeds versus 9 of 12 ungoverned. But it did not conjure competence either: on each model hardest tamper family neither arm reached the real fix.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": "Blocking the shortcut does not destroy competence where competence is within reach on the even Fibonacci family Qwen reaches the legitimate fix on 12 of 12 gated seeds versus 9 of 12 ungoverned"
+  },
+  {
+    "question": "What is the exact GPU model and memory configuration used for training the DSpark draft models?",
+    "expected_answer": "I could not find the answer in the uploaded documents.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": ""
+  },
+  {
+    "question": "How many parameters does the full Governed Individuation runtime system have including the effect monitor and cryptographic modules?",
+    "expected_answer": "I could not find the answer in the uploaded documents.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": ""
+  },
+  {
+    "question": "What was the total training cost in GPU-hours for the DSpark models deployed with DeepSeek-V4?",
+    "expected_answer": "I could not find the answer in the uploaded documents.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": ""
+  },
+  {
+    "question": "Which specific version of the OpenAI API was used for the LLM-as-judge scoring in the Governed Individuation evaluation?",
+    "expected_answer": "I could not find the answer in the uploaded documents.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": ""
+  },
+  {
+    "question": "What Python version and deep learning framework was used for the DSpark training pipeline?",
+    "expected_answer": "I could not find the answer in the uploaded documents.",
+    "source_file": "2607_05147v1.pdf",
+    "relevant_chunk_text": ""
+  },
+  {
+    "question": "What was the exact inference batch size used during the ToolGym-GI evaluation runs?",
+    "expected_answer": "I could not find the answer in the uploaded documents.",
+    "source_file": "2607_04613v1.pdf",
+    "relevant_chunk_text": ""
+  }
+]

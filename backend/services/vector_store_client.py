@@ -1,4 +1,5 @@
 import chromadb
+import asyncio
 from chromadb.api import ClientAPI
 from backend.core.config import settings
 from backend.core.errors import EmbeddingModelMismatchError, ChunkConfigMismatchError
@@ -42,7 +43,8 @@ def validate_collection_config(
         or metadata.get("chunk_overlap") != chunk_overlap
     ):
         raise ChunkConfigMismatchError(
-            f"Chunk configuration mismatch: expected chunk_size={metadata.get('chunk_size')}, chunk_overlap={metadata.get('chunk_overlap')}, got chunk_size={chunk_size}, chunk_overlap={chunk_overlap}"
+            f"Chunk configuration mismatch: collection expects chunk_size={metadata.get('chunk_size')}, chunk_overlap={metadata.get('chunk_overlap')}, "
+            f"but got chunk_size={chunk_size}, chunk_overlap={chunk_overlap}"
         )
 
 
@@ -67,18 +69,15 @@ def add_chunks(
     )
 
 
-def source_exists(collection: chromadb.Collection, source_file: str) -> bool:
-
-    results = collection.get(
-        where={"source_file": source_file},
-        limit=1,
+async def source_exists_async(collection, source_file: str) -> bool:
+    return await asyncio.to_thread(
+        lambda: len(collection.get(where={"source_file": source_file}, limit=1)["ids"])
+        > 0
     )
 
-    return len(results["ids"]) > 0
 
-
-def delete_by_source(collection: chromadb.Collection, source_file: str) -> None:
-
+async def delete_by_source_async(collection, source_file: str) -> None:
+    await asyncio.to_thread(collection.delete, where={"source_file": source_file})
     collection.delete(where={"source_file": source_file})
 
 

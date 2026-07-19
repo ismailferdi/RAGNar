@@ -8,16 +8,17 @@ from backend.services.vector_store_client import (
 )
 from backend.services.doc_registry import initialize_registry
 
-_openai_client: openai.OpenAI | None = None
+_openai_client: openai.AsyncOpenAI | None = None
 _chroma_client: ClientAPI | None = None
 _collection: chromadb.Collection | None = None
+_registry_db_path: str = settings.registry_db_path
 
 
-def initialize_clients() -> None:
+async def initialize_clients() -> None:
     global _openai_client, _chroma_client, _collection
 
     if _openai_client is None:
-        _openai_client = openai.OpenAI(
+        _openai_client = openai.AsyncOpenAI(
             api_key=settings.openrouter_api_key.get_secret_value(),
             base_url=settings.base_url,
         )
@@ -40,10 +41,10 @@ def initialize_clients() -> None:
         chunk_overlap=settings.chunk_overlap,
     )
 
-    initialize_registry(db_path=settings.registry_db_path)
+    await initialize_registry(db_path=_registry_db_path)
 
 
-def get_openai_client() -> openai.OpenAI:
+def get_openai_client() -> openai.AsyncOpenAI:
     if _openai_client is None:
         raise RuntimeError(
             "OpenAI client has not been initialized. Call initialize_clients() first."
