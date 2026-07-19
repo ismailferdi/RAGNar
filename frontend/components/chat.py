@@ -4,7 +4,7 @@ import os
 
 from frontend.components.source_viewer import render_sources
 
-API_BASE_URL = os.getenv("RAGNAR_API_URL", "http://localhost:8000")
+API_BASE_URL = st.secrets["RAGNAR_API_URL"]
 
 
 def render():

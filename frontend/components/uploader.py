@@ -3,7 +3,7 @@ import httpx
 import os
 from json import loads, JSONDecodeError
 
-API_BASE_URL = os.getenv("RAGNAR_API_URL", "http://localhost:8000")
+API_BASE_URL = st.secrets["RAGNAR_API_URL"]
 
 
 def _parse_documents(data):

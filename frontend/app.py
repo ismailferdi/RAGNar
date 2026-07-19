@@ -10,7 +10,7 @@ if "chat_history" not in st.session_state:
 if "documents" not in st.session_state:
     st.session_state["documents"] = []
 
-API_BASE_URL = os.getenv("RAGNAR_API_URL", "http://localhost:8000")
+API_BASE_URL = st.secrets["RAGNAR_API_URL"]
 
 try:
     response = httpx.get(f"{API_BASE_URL}/documents/")
